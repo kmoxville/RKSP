@@ -1,0 +1,30 @@
+# Build
+target/
+build/
+out/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+.mvn/timing.properties
+
+# Spring Boot
+spring-boot-*.log
