@@ -1,6 +1,3 @@
-# Билет №12: ingest-service + processor-service + инфраструктура
-# Запуск из корня: docker compose up --build
-
 name: samylovskikh
 
 services:
@@ -18,7 +15,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - ./processor-service/src/main/resources/sql/postgres_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./src/main/resources/sql/postgres_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
 
   clickhouse:
     image: clickhouse/clickhouse-server:24
@@ -46,7 +43,7 @@ services:
       retries: 5
 
   ingest-service:
-    build: ./ingest-service
+    build: ../ingest-service
     ports:
       - "8081:8080"
     environment:
@@ -59,7 +56,7 @@ services:
         condition: service_healthy
 
   processor-service:
-    build: ./processor-service
+    build: .
     ports:
       - "8082:8080"
     environment:
@@ -71,7 +68,6 @@ services:
       SPRING_RABBITMQ_USERNAME: guest
       SPRING_RABBITMQ_PASSWORD: guest
       CLICKHOUSE_URL: jdbc:clickhouse://clickhouse:8123/default
-      CLICKHOUSE_HTTP_URL: http://clickhouse:8123
       CLICKHOUSE_USERNAME: default
       CLICKHOUSE_PASSWORD: ""
     depends_on:
