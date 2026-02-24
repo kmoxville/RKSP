@@ -1,3 +1,5 @@
+name: myapp
+
 services:
   app:
     build: .
@@ -44,7 +46,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
   clickhouse:
     image: clickhouse/clickhouse-server:24-alpine
     ports:
@@ -55,3 +56,4 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
