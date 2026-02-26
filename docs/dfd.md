@@ -13,18 +13,18 @@ flowchart TB
     end
 
     subgraph Processes
-        P1["1.0 Приём событий\n(ingest-service)"]
-        P2["2.0 Обработка и сохранение\n(processor-service)"]
-        P3["3.0 Подсчёт и агрегация\n(processor-service)"]
+        P1["1.0 Приём событий<br/>(ingest-service)"]
+        P2["2.0 Обработка и сохранение<br/>(processor-service)"]
+        P3["3.0 Подсчёт и агрегация<br/>(processor-service)"]
     end
 
     subgraph Storage
-        D1[("D1\nRabbitMQ\nevents.raw")]
-        D2[("D2\nPostgreSQL\nraw_university_events")]
-        D3[("D3\nClickHouse\nevents_aggregates")]
+        D1[("D1<br/>RabbitMQ<br/>events.raw")]
+        D2[("D2<br/>PostgreSQL<br/>raw_university_events")]
+        D3[("D3<br/>ClickHouse<br/>events_aggregates")]
     end
 
-    User -->|"POST /events\nJSON события"| P1
+    User -->|"POST /events<br/>JSON события"| P1
     P1 -->|Сообщение| D1
     D1 -->|Сообщение| P2
     P2 -->|Запись| D2
