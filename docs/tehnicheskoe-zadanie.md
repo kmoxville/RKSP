@@ -52,25 +52,64 @@
 
 ---
 
-## 5. ERD-диаграммы хранилищ
+## 5. Диаграммы
+
+DFD и ERD-диаграммы приведены в приложении А.
+
+---
+
+## Приложение А. Диаграммы
+
+### А.1 DFD (нотация Гейна-Сарсона)
+
+**Контекстная диаграмма (уровень 0):**
 
 ```mermaid
-erDiagram
-    raw_university_events ||--o{ events_aggregates : "подсчитывает"
-    raw_university_events {
-        bigint id PK
-        varchar fio_prepodavatelya
-        varchar disciplina
-        varchar auditoriya
-        timestamp data_sobytiya
-    }
-    events_aggregates {
-        DateTime data_vremya_zapisi
-        UInt64 kolichestvo_zapisey
-    }
+flowchart LR
+    User[Пользователь]
+    Sys["Система обработки<br/>событий университета"]
+    User -->|"События (JSON)"| Sys
+    User -->|"Запрос подсчёта"| Sys
+    Sys -->|"Количество записей"| User
 ```
 
-### 5.1 raw_university_events (PostgreSQL)
+**Диаграмма 1 уровня:**
+
+```mermaid
+flowchart TB
+    subgraph External
+        User[Пользователь]
+    end
+
+    subgraph Processes
+        P1["1.0 Приём событий<br/>(ingest-service)"]
+        P2["2.0 Обработка и сохранение<br/>(processor-service)"]
+        P3["3.0 Подсчёт и агрегация<br/>(processor-service)"]
+    end
+
+    subgraph Storage
+        D1[("D1<br/>RabbitMQ<br/>events.raw")]
+        D2[("D2<br/>PostgreSQL<br/>raw_university_events")]
+        D3[("D3<br/>ClickHouse<br/>events_aggregates")]
+    end
+
+    User -->|"POST /events<br/>JSON события"| P1
+    P1 -->|Сообщение| D1
+    D1 -->|Сообщение| P2
+    P2 -->|Запись| D2
+    User -->|"POST /events/count"| P3
+    D2 -.->|"SELECT count()"| P3
+    P3 -->|Агрегат| D3
+    P3 -->|"{count: N}"| User
+```
+
+### А.2 ERD (нотация Чена)
+
+![ERD нотация Чена](erd-chen.png)
+
+### А.3 Описание атрибутов хранилищ
+
+**raw_university_events (PostgreSQL):**
 
 | Атрибут | Тип | Описание |
 |---------|-----|----------|
@@ -81,13 +120,11 @@ erDiagram
 | auditoriya | VARCHAR(100) | Аудитория |
 | data_sobytiya | TIMESTAMP | Дата события |
 
-### 5.2 events_aggregates (ClickHouse)
+**events_aggregates (ClickHouse):**
 
 | Атрибут | Тип | Описание |
 |---------|-----|----------|
 | data_vremya_zapisi | DateTime | Дата и время записи |
 | kolichestvo_zapisey | UInt64 | Количество записей |
-
-### 5.3 Связь
 
 Агрегаты формируются подсчётом записей в raw_university_events; прямая ссылка (FK) не используется.
