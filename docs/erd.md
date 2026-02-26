@@ -2,6 +2,10 @@
 
 Хранилища D2 и D3 из DFD.
 
+## Диаграмма в нотации Чена
+
+![ERD нотация Чена](erd-chen.png)
+
 ---
 
 ## Хранилище D2: raw_university_events (PostgreSQL)
