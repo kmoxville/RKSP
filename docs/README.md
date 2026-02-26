@@ -4,7 +4,7 @@
 
 | Файл | Описание |
 |------|----------|
-| [dfd.md](dfd.md) | DFD-диаграмма 1 уровня (Гейна-Сарсона) |
+| [dfd.md](dfd.md) | DFD: контекстная диаграмма, 1 уровень, мини-спецификации (Гейна-Сарсона) |
 | [erd.md](erd.md) | ERD-диаграммы (Чена) для хранилищ PostgreSQL и ClickHouse |
 | [opisanie-programmy.md](opisanie-programmy.md) | Описание программы по ГОСТ 19.402-78 |
 | [tehnicheskoe-zadanie.md](tehnicheskoe-zadanie.md) | Техническое задание по ГОСТ 19.201-78 |
