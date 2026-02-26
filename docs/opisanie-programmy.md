@@ -37,7 +37,20 @@
 
 ## 3. Описание логической структуры
 
-### 3.1 DFD-диаграмма
+### 3.1 DFD-диаграммы
+
+**Контекстная диаграмма (уровень 0):**
+
+```mermaid
+flowchart LR
+    User[Пользователь]
+    Sys[Система обработки событий]
+    User -->|Событие| Sys
+    User -->|Запрос подсчёта| Sys
+    Sys -->|Количество записей| User
+```
+
+**Диаграмма 1 уровня:**
 
 ```mermaid
 flowchart TB
@@ -45,20 +58,20 @@ flowchart TB
     P1["1.0 Приём событий"]
     P2["2.0 Обработка и сохранение"]
     P3["3.0 Подсчёт и агрегация"]
-    D1[("D1 RabbitMQ events.raw")]
-    D2[("D2 PostgreSQL raw_university_events")]
-    D3[("D3 ClickHouse events_aggregates")]
-    User -->|POST /events| P1
+    D1[("D1 events.raw")]
+    D2[("D2 raw_university_events")]
+    D3[("D3 events_aggregates")]
+    User -->|Событие| P1
     P1 --> D1
     D1 --> P2
     P2 --> D2
-    User -->|POST /events/count| P3
+    User -->|Запрос| P3
     D2 --> P3
     P3 --> D3
     P3 -->|count| User
 ```
 
-Подробности — в [dfd.md](dfd.md).
+Полные диаграммы 2 уровня и мини-спецификации — в [dfd.md](dfd.md).
 
 ### 3.2 Алгоритм
 
